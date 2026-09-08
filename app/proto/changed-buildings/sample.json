@@ -1,0 +1,15 @@
+{
+  "title": "Cambridge Street / Alderney Street",
+  "status": "Exploratory terrace envelopes, not individual houses",
+  "source": "https://www.londonpicturearchive.org.uk/view-item?i=343662",
+  "sourceImage": "/proto/paper-buildings/source",
+  "sourceImageSha256": "89158181aab8c0aea24c694d3e859ae6187b1defbc15654125f8c0b4ec3e6fc1",
+  "sourceDimensions": [1067, 672],
+  "dateLabel": "Wartime sheet · cumulative damage 1940–1945",
+  "method": "Two simplified terrace envelopes manually read from the supplied screenshot. Rear extensions and house divisions are omitted. Placement uses the existing exploratory three-junction local affine transform. The site boundary is a prototype focus area, not an official parcel. These shapes are not extracted from the Victorian dataset, do not establish individual properties, and carry no damage classification.",
+  "site": [[623,248],[794,373],[745,443],[571,318]],
+  "rows": [
+    {"id":"cambridge-row","label":"Cambridge Street terrace envelope","ring":[[623,253],[787,374],[770,394],[606,273]]},
+    {"id":"alderney-row","label":"Alderney Street terrace envelope","ring":[[588,300],[750,421],[737,439],[575,319]]}
+  ]
+}

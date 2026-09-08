@@ -1,0 +1,545 @@
+{
+  "schemaVersion": 1,
+  "id": "cambridge-alderney-local",
+  "status": "exploratory",
+  "sourceImage": {
+    "url": "/proto/paper-buildings/source",
+    "width": 1067,
+    "height": 672,
+    "sha256": "89158181aab8c0aea24c694d3e859ae6187b1defbc15654125f8c0b4ec3e6fc1",
+    "description": "User-supplied archive viewer screenshot; pixels measured in this exact 1067 by 672 image"
+  },
+  "method": "Local affine placement from three road-junction centres picked manually in the screenshot to OSM node coordinates. Three other road-junction picks were withheld. This is an exploratory alignment, not independent survey or a passed registration gate.",
+  "points": [
+    {
+      "id": "cambridge-gloucester",
+      "role": "fit",
+      "pixel": [
+        624,
+        234
+      ],
+      "coordinates": [
+        -0.1415592,
+        51.4890921
+      ],
+      "reference": "https://www.openstreetmap.org/node/24501909",
+      "reviewer": "Codex visual estimate, 2026-09-08"
+    },
+    {
+      "id": "alderney-gloucester",
+      "role": "fit",
+      "pixel": [
+        540,
+        336
+      ],
+      "coordinates": [
+        -0.1420345,
+        51.4887076
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789219",
+      "reviewer": "Codex visual estimate, 2026-09-08"
+    },
+    {
+      "id": "cambridge-charlwood",
+      "role": "fit",
+      "pixel": [
+        819,
+        377
+      ],
+      "coordinates": [
+        -0.1403781,
+        51.4885384
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789164",
+      "reviewer": "Codex visual estimate, 2026-09-08"
+    },
+    {
+      "id": "alderney-charlwood",
+      "role": "check",
+      "pixel": [
+        737,
+        484
+      ],
+      "coordinates": [
+        -0.1408305,
+        51.4881444
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789201",
+      "reviewer": "Codex visual estimate, 2026-09-08"
+    },
+    {
+      "id": "winchester-gloucester",
+      "role": "check",
+      "pixel": [
+        461,
+        437
+      ],
+      "coordinates": [
+        -0.1424658,
+        51.4883226
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789239",
+      "reviewer": "Codex visual estimate, 2026-09-08"
+    },
+    {
+      "id": "st-georges-gloucester",
+      "role": "check",
+      "pixel": [
+        708,
+        130
+      ],
+      "coordinates": [
+        -0.1410314,
+        51.4895029
+      ],
+      "reference": "https://www.openstreetmap.org/node/24501708",
+      "reviewer": "Codex visual estimate, 2026-09-08"
+    }
+  ],
+  "replaces": [
+    "p88-14",
+    "p88-15",
+    "p88-16",
+    "p88-17"
+  ],
+  "areas": [
+    {
+      "id": "local-north-orange",
+      "category": "blast",
+      "ring": [
+        [
+          696,
+          155
+        ],
+        [
+          856,
+          275
+        ],
+        [
+          843,
+          293
+        ],
+        [
+          684,
+          176
+        ]
+      ],
+      "description": "Orange terrace row north of Cambridge Street",
+      "siteId": null
+    },
+    {
+      "id": "local-north-pink",
+      "category": "repairable",
+      "ring": [
+        [
+          670,
+          197
+        ],
+        [
+          828,
+          313
+        ],
+        [
+          816,
+          331
+        ],
+        [
+          657,
+          216
+        ]
+      ],
+      "description": "Pink terrace row facing Cambridge Street",
+      "siteId": null
+    },
+    {
+      "id": "local-north-black-end",
+      "category": "destroyed",
+      "ring": [
+        [
+          812,
+          317
+        ],
+        [
+          831,
+          326
+        ],
+        [
+          821,
+          340
+        ],
+        [
+          805,
+          331
+        ]
+      ],
+      "description": "Dark end of the northern terrace",
+      "siteId": null
+    },
+    {
+      "id": "local-central-purple-west",
+      "category": "beyond-repair",
+      "ring": [
+        [
+          626,
+          257
+        ],
+        [
+          671,
+          291
+        ],
+        [
+          656,
+          309
+        ],
+        [
+          633,
+          292
+        ],
+        [
+          602,
+          332
+        ],
+        [
+          625,
+          347
+        ],
+        [
+          612,
+          364
+        ],
+        [
+          574,
+          328
+        ]
+      ],
+      "description": "Western purple terrace ends on the rebuilt site",
+      "siteId": "cambridge-alderney-rebuilt"
+    },
+    {
+      "id": "local-central-black-north",
+      "category": "destroyed",
+      "ring": [
+        [
+          671,
+          291
+        ],
+        [
+          750,
+          349
+        ],
+        [
+          737,
+          367
+        ],
+        [
+          657,
+          310
+        ]
+      ],
+      "description": "Destroyed historical row along Cambridge Street",
+      "siteId": "cambridge-alderney-rebuilt"
+    },
+    {
+      "id": "local-central-purple-southwest",
+      "category": "beyond-repair",
+      "ring": [
+        [
+          613,
+          362
+        ],
+        [
+          641,
+          382
+        ],
+        [
+          654,
+          363
+        ],
+        [
+          625,
+          343
+        ]
+      ],
+      "description": "Purple lower terrace segment",
+      "siteId": "cambridge-alderney-rebuilt"
+    },
+    {
+      "id": "local-central-black-south",
+      "category": "destroyed",
+      "ring": [
+        [
+          643,
+          381
+        ],
+        [
+          719,
+          435
+        ],
+        [
+          732,
+          416
+        ],
+        [
+          655,
+          363
+        ]
+      ],
+      "description": "Destroyed historical row along Alderney Street",
+      "siteId": "cambridge-alderney-rebuilt"
+    },
+    {
+      "id": "local-central-purple-east",
+      "category": "beyond-repair",
+      "ring": [
+        [
+          750,
+          349
+        ],
+        [
+          790,
+          375
+        ],
+        [
+          746,
+          441
+        ],
+        [
+          719,
+          435
+        ],
+        [
+          732,
+          416
+        ],
+        [
+          744,
+          423
+        ],
+        [
+          764,
+          387
+        ],
+        [
+          737,
+          367
+        ]
+      ],
+      "description": "Eastern purple terrace ends on the rebuilt site",
+      "siteId": "cambridge-alderney-rebuilt"
+    },
+    {
+      "id": "local-south-pink",
+      "category": "repairable",
+      "ring": [
+        [
+          545,
+          355
+        ],
+        [
+          635,
+          421
+        ],
+        [
+          623,
+          441
+        ],
+        [
+          532,
+          375
+        ]
+      ],
+      "description": "Pink terrace row south of Alderney Street",
+      "siteId": null
+    },
+    {
+      "id": "local-south-purple",
+      "category": "beyond-repair",
+      "ring": [
+        [
+          636,
+          423
+        ],
+        [
+          657,
+          439
+        ],
+        [
+          644,
+          459
+        ],
+        [
+          622,
+          442
+        ]
+      ],
+      "description": "Purple segment in the southern block",
+      "siteId": null
+    },
+    {
+      "id": "local-south-red",
+      "category": "doubtful",
+      "ring": [
+        [
+          658,
+          439
+        ],
+        [
+          671,
+          450
+        ],
+        [
+          658,
+          469
+        ],
+        [
+          645,
+          458
+        ]
+      ],
+      "description": "Red segment in the southern block",
+      "siteId": null
+    },
+    {
+      "id": "local-south-pink-end",
+      "category": "repairable",
+      "ring": [
+        [
+          672,
+          451
+        ],
+        [
+          696,
+          469
+        ],
+        [
+          683,
+          488
+        ],
+        [
+          659,
+          470
+        ]
+      ],
+      "description": "Pink eastern end of the southern row",
+      "siteId": null
+    },
+    {
+      "id": "local-south-orange",
+      "category": "blast",
+      "ring": [
+        [
+          514,
+          389
+        ],
+        [
+          667,
+          502
+        ],
+        [
+          652,
+          523
+        ],
+        [
+          501,
+          410
+        ]
+      ],
+      "description": "Orange row facing Winchester Street",
+      "siteId": null
+    },
+    {
+      "id": "local-south-orange-end",
+      "category": "blast",
+      "ring": [
+        [
+          684,
+          489
+        ],
+        [
+          668,
+          502
+        ],
+        [
+          653,
+          522
+        ],
+        [
+          663,
+          530
+        ],
+        [
+          696,
+          483
+        ]
+      ],
+      "description": "Orange corner of the southern terrace",
+      "siteId": null
+    }
+  ],
+  "traceNote": "Simplified visible terrace segments traced manually from the supplied screenshot, including separate categories on opposite street frontages. Rear projections, individual property divisions and uncertain tiny markings are not resolved. These are draft historical areas, not reviewed individual houses.",
+  "site": {
+    "id": "cambridge-alderney-rebuilt",
+    "name": "Russell House replacement site",
+    "ring": [
+      [
+        626,
+        257
+      ],
+      [
+        790,
+        375
+      ],
+      [
+        746,
+        441
+      ],
+      [
+        574,
+        328
+      ]
+    ],
+    "modernBuildingId": "a37353db-6983-493e-804e-33e6491ef7cf",
+    "relationship": "replacement-footprint",
+    "evidenceStatus": "council-description-and-visual-comparison",
+    "historicalPropertyIds": [],
+    "note": "The supplied historical screenshot shows two terrace rows; the Overture source shows a long I-shaped modern block. The site relationship is observed, but individual historical house identity is unreviewed.",
+    "source": "https://www.westminster.gov.uk/media/document/_-2021-playle--partners-condition-survey-report",
+    "sourcePage": 5,
+    "modernConstructionYear": 1962,
+    "modernDescription": "Nine-storey I-shaped block at Cambridge, Charlwood and Alderney Streets; Playle & Partners condition survey, February 2018, page 5."
+  },
+  "comparisonProbes": [
+    {
+      "legacyId": "p88-14",
+      "targetPixel": [
+        710,
+        319
+      ],
+      "description": "Northern row at the Russell House site"
+    },
+    {
+      "legacyId": "p88-15",
+      "targetPixel": [
+        650,
+        369
+      ],
+      "description": "Southern row at the Russell House site"
+    },
+    {
+      "legacyId": "p88-16",
+      "targetPixel": [
+        584,
+        451
+      ],
+      "description": "Orange row facing Winchester Street"
+    },
+    {
+      "legacyId": "p88-17",
+      "targetPixel": [
+        770,
+        225
+      ],
+      "description": "Orange row north of Cambridge Street"
+    }
+  ]
+}

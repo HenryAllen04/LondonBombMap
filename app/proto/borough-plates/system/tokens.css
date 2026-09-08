@@ -1,0 +1,28 @@
+.borough-study {
+  --lb-bg: oklch(.948 .012 85);
+  --lb-paper: oklch(.988 .007 86);
+  --lb-map-bed: oklch(.916 .018 86);
+  --lb-ink: oklch(.275 .014 75);
+  --lb-muted: oklch(.47 .016 77);
+  --lb-line: oklch(.28 .014 75 / .14);
+  --lb-selected: oklch(.915 .022 84);
+  --lb-draft-bg: oklch(.94 .035 80);
+  --lb-draft-ink: oklch(.39 .07 64);
+  --lb-focus: oklch(.3 0 0);
+  --lb-radius-control: 5px;
+  --lb-radius-card: 8px;
+  --lb-radius-plate: 14px;
+  --lb-space-1: 4px;
+  --lb-space-2: 8px;
+  --lb-space-3: 12px;
+  --lb-space-4: 16px;
+  --lb-space-6: 24px;
+  --lb-space-8: 32px;
+  --lb-space-12: 48px;
+  --lb-shadow-card: 0 0 0 1px oklch(0 0 0 / .05),0 2px 5px oklch(0 0 0 / .04),0 8px 20px oklch(0 0 0 / .06);
+  --lb-shadow-plate: 0 1px 0 oklch(.82 .02 85),0 5px 0 oklch(.87 .02 85),0 6px 0 oklch(.79 .02 85),0 18px 30px oklch(.28 .025 75 / .09),0 38px 65px oklch(.28 .025 75 / .06);
+  --lb-type-caption: 12px;
+  --lb-type-body: 14px;
+  --lb-type-input: 16px;
+  --lb-type-title: 34px;
+}

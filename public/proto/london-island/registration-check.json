@@ -1,0 +1,15 @@
+{
+  "state": "pending",
+  "fitPoints": 0,
+  "checkPoints": 0,
+  "fit": null,
+  "heldOut": null,
+  "blockers": [
+    "Add at least 12 distributed fitting landmarks.",
+    "Add at least 8 independent check landmarks.",
+    "Identify the source image and its SHA-256 checksum.",
+    "Record the median frontage width measured in the reviewed sample."
+  ],
+  "residuals": [],
+  "model": null
+}

@@ -1,0 +1,229 @@
+{
+  "source": "https://www.londonpicturearchive.org.uk/zoom-item?i=343662",
+  "record": "LCC_AR_TP_P_041_088",
+  "status": "draft",
+  "method": "Manual outlines of clearly coloured areas in the public viewer, then affine placement using garden and bridge landmarks. These are approximate groups, not surveyed individual building footprints. Recheck geometry and every colour against the purchased file.",
+  "reference": "Public viewer, 1800 × 952 viewport, full-sheet view with image beginning approximately at (242, 29). Coordinates below refer to that view; do not apply them to the delivered image without recalibration.",
+  "anchors": [
+    {
+      "name": "Eccleston Square garden centre",
+      "pixel": [877, 161],
+      "coordinates": [-0.1441178, 51.4920792],
+      "osm": "way/24384003"
+    },
+    {
+      "name": "Warwick Square garden centre",
+      "pixel": [963, 231],
+      "coordinates": [-0.1412588, 51.4907165],
+      "osm": "way/24383960"
+    },
+    {
+      "name": "Grosvenor Bridge centre",
+      "pixel": [763, 578],
+      "coordinates": [-0.1473541, 51.4843486],
+      "osm": "way/536483831"
+    }
+  ],
+  "areas": [
+    {
+      "id": "p88-01",
+      "category": "blast",
+      "ring": [
+        [818, 162],
+        [867, 103],
+        [877, 112],
+        [829, 175]
+      ]
+    },
+    {
+      "id": "p88-02",
+      "category": "blast",
+      "ring": [
+        [807, 185],
+        [863, 218],
+        [857, 225],
+        [801, 193]
+      ]
+    },
+    {
+      "id": "p88-03",
+      "category": "blast",
+      "ring": [
+        [897, 177],
+        [920, 144],
+        [929, 151],
+        [906, 184]
+      ]
+    },
+    {
+      "id": "p88-04",
+      "category": "beyond-repair",
+      "ring": [
+        [931, 115],
+        [952, 132],
+        [946, 141],
+        [925, 123]
+      ]
+    },
+    {
+      "id": "p88-05",
+      "category": "repairable",
+      "ring": [
+        [956, 143],
+        [976, 158],
+        [970, 166],
+        [950, 151]
+      ]
+    },
+    {
+      "id": "p88-06",
+      "category": "beyond-repair",
+      "ring": [
+        [766, 248],
+        [786, 220],
+        [793, 225],
+        [773, 254]
+      ]
+    },
+    {
+      "id": "p88-07",
+      "category": "destroyed",
+      "ring": [
+        [759, 275],
+        [807, 263],
+        [810, 271],
+        [766, 284]
+      ]
+    },
+    {
+      "id": "p88-08",
+      "category": "destroyed",
+      "ring": [
+        [782, 292],
+        [816, 283],
+        [820, 291],
+        [790, 301]
+      ]
+    },
+    {
+      "id": "p88-09",
+      "category": "beyond-repair",
+      "ring": [
+        [790, 301],
+        [822, 293],
+        [825, 300],
+        [797, 308]
+      ]
+    },
+    {
+      "id": "p88-10",
+      "category": "blast",
+      "ring": [
+        [817, 255],
+        [839, 271],
+        [835, 278],
+        [821, 269]
+      ]
+    },
+    {
+      "id": "p88-11",
+      "category": "repairable",
+      "ring": [
+        [901, 326],
+        [920, 340],
+        [917, 346],
+        [897, 332]
+      ]
+    },
+    {
+      "id": "p88-12",
+      "category": "repairable",
+      "ring": [
+        [891, 338],
+        [910, 352],
+        [907, 358],
+        [887, 344]
+      ]
+    },
+    {
+      "id": "p88-13",
+      "category": "repairable",
+      "ring": [
+        [883, 349],
+        [903, 364],
+        [899, 369],
+        [879, 355]
+      ]
+    },
+    {
+      "id": "p88-14",
+      "category": "beyond-repair",
+      "ring": [
+        [968, 328],
+        [995, 347],
+        [990, 354],
+        [963, 335]
+      ]
+    },
+    {
+      "id": "p88-15",
+      "category": "beyond-repair",
+      "ring": [
+        [960, 340],
+        [987, 359],
+        [982, 366],
+        [955, 347]
+      ]
+    },
+    {
+      "id": "p88-16",
+      "category": "blast",
+      "ring": [
+        [955, 353],
+        [978, 370],
+        [973, 376],
+        [950, 360]
+      ]
+    },
+    {
+      "id": "p88-17",
+      "category": "blast",
+      "ring": [
+        [977, 305],
+        [1013, 330],
+        [1008, 337],
+        [972, 312]
+      ]
+    },
+    {
+      "id": "p88-18",
+      "category": "beyond-repair",
+      "ring": [
+        [997, 283],
+        [1023, 248],
+        [1029, 253],
+        [1003, 288]
+      ]
+    },
+    {
+      "id": "p88-19",
+      "category": "blast",
+      "ring": [
+        [1005, 286],
+        [1029, 255],
+        [1034, 260],
+        [1011, 291]
+      ]
+    },
+    {
+      "id": "p88-20",
+      "category": "destroyed",
+      "ring": [
+        [1043, 369],
+        [1064, 364],
+        [1068, 370],
+        [1045, 375]
+      ]
+    }
+  ]
+}

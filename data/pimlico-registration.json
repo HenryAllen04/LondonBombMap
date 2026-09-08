@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "crs": "EPSG:27700",
+  "sourceImage": {"id": "LCC_AR_TP_P_041_088-delivered-image-pending", "sha256": null},
+  "medianFrontageMetres": null,
+  "points": []
+}
