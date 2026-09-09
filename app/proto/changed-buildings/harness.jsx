@@ -29,7 +29,7 @@ export default function Harness({initial}){
  },[attempt]);
  useEffect(()=>()=>clearTimeout(copyTimer.current),[]);
  useLayoutEffect(()=>{
-  function measure(){const el=picker.current?.querySelector('[data-active]'),highlight=picker.current?.querySelector('.proto-picker-highlight');if(el&&highlight){highlight.style.width=el.offsetWidth+'px';highlight.style.transform=`translateX(${el.offsetLeft}px)`;}}
+  function measure(){picker.current?.setAttribute('data-position',innerWidth<=720?'top':'bottom');const el=picker.current?.querySelector('[data-active]'),highlight=picker.current?.querySelector('.proto-picker-highlight');if(el&&highlight){highlight.style.width=el.offsetWidth+'px';highlight.style.transform=`translateX(${el.offsetLeft}px)`;}}
   measure();let second;const first=requestAnimationFrame(()=>{second=requestAnimationFrame(()=>picker.current?.setAttribute('data-ready',''));});window.addEventListener('resize',measure);
   return()=>{cancelAnimationFrame(first);cancelAnimationFrame(second);window.removeEventListener('resize',measure);};
  },[current]);
@@ -46,7 +46,7 @@ export default function Harness({initial}){
  async function copy(){try{await navigator.clipboard.writeText(JSON.stringify(config.current,null,2));setCopied('Copied');}catch{setCopied('Copy unavailable');}clearTimeout(copyTimer.current);copyTimer.current=setTimeout(()=>setCopied(''),2000);}
  const Variant=variants[current];
  return <><main className="borough-study change-study">
-  <header className="change-header"><a href="/proto/london-island?v=2"><ArrowLeft size={16}/> London Before</a><span>PIMLICO / A STUDY OF CHANGE</span><button onClick={()=>dialog.current.showModal()}>View the evidence ↗</button></header>
+  <header className="change-header"><a href="/"><ArrowLeft size={16}/> London Before</a><span>PIMLICO / A STUDY OF CHANGE</span><button onClick={()=>dialog.current.showModal()}>View the evidence ↗</button></header>
   <div className="change-workspace">
    <aside className="change-sidebar"><div><span className="change-eyebrow">CAMBRIDGE STREET / ALDERNEY STREET</span><h1>The same site.<br/>A different shape.</h1><p className="change-lead">A small experiment in seeing what used to stand beneath the map.</p></div>
     <Variant key={`${current}-${replay}`} onMix={mix=>update({mix})}/>

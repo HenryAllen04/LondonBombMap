@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "sourceImageSha256": "89158181aab8c0aea24c694d3e859ae6187b1defbc15654125f8c0b4ec3e6fc1",
+  "fingerprints": {
+    "modern": "25d919be9534c383f133eaa17f9c20d78bad7aada50e783ae2550279304f8e45",
+    "boundaries": "9942f68293315590d6ed229afbb159c0274f0bdec8a66b95d8cd753049437698",
+    "traces": "3fe36ebda67bc558659387b518f5026275f90a8c72543330145bf570f38f0d72",
+    "localStudy": "100df775ea19f19759cbee40023944bbf299231d4caaaefd2b074951dd7cb6a1"
+  },
+  "adjustment": {
+    "east": 6,
+    "north": -1,
+    "rotation": 0,
+    "scale": 1
+  },
+  "points": [
+    {
+      "id": "cambridge-gloucester",
+      "role": "fit",
+      "pixel": [
+        624,
+        234
+      ],
+      "coordinates": [
+        -0.1415592,
+        51.4890921
+      ],
+      "reference": "https://www.openstreetmap.org/node/24501909",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "kind": "street-junction"
+    },
+    {
+      "id": "alderney-gloucester",
+      "role": "fit",
+      "pixel": [
+        540,
+        336
+      ],
+      "coordinates": [
+        -0.1420345,
+        51.4887076
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789219",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "kind": "street-junction"
+    },
+    {
+      "id": "cambridge-charlwood",
+      "role": "fit",
+      "pixel": [
+        819,
+        377
+      ],
+      "coordinates": [
+        -0.1403781,
+        51.4885384
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789164",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "kind": "street-junction"
+    },
+    {
+      "id": "alderney-charlwood",
+      "role": "check",
+      "pixel": [
+        737,
+        484
+      ],
+      "coordinates": [
+        -0.1408305,
+        51.4881444
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789201",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "kind": "street-junction"
+    },
+    {
+      "id": "winchester-gloucester",
+      "role": "check",
+      "pixel": [
+        461,
+        437
+      ],
+      "coordinates": [
+        -0.1424658,
+        51.4883226
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789239",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "kind": "street-junction"
+    },
+    {
+      "id": "st-georges-gloucester",
+      "role": "check",
+      "pixel": [
+        708,
+        130
+      ],
+      "coordinates": [
+        -0.1410314,
+        51.4895029
+      ],
+      "reference": "https://www.openstreetmap.org/node/24501708",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "kind": "street-junction"
+    }
+  ],
+  "assignments": [],
+  "reviewer": "",
+  "savedAt": "2026-09-08T21:00:01.987Z",
+  "artifact": {
+    "type": "FeatureCollection",
+    "metadata": {
+      "schemaVersion": 1,
+      "sourceImageSha256": "89158181aab8c0aea24c694d3e859ae6187b1defbc15654125f8c0b4ec3e6fc1",
+      "fingerprints": {
+        "modern": "25d919be9534c383f133eaa17f9c20d78bad7aada50e783ae2550279304f8e45",
+        "boundaries": "9942f68293315590d6ed229afbb159c0274f0bdec8a66b95d8cd753049437698",
+        "traces": "3fe36ebda67bc558659387b518f5026275f90a8c72543330145bf570f38f0d72",
+        "localStudy": "100df775ea19f19759cbee40023944bbf299231d4caaaefd2b074951dd7cb6a1"
+      },
+      "status": "Authored correspondence; review labels are human assertions, not measured historical accuracy",
+      "residuals": [
+        {
+          "id": "cambridge-gloucester",
+          "role": "fit",
+          "pixel": [
+            624,
+            234
+          ],
+          "coordinates": [
+            -0.1415592,
+            51.4890921
+          ],
+          "reference": "https://www.openstreetmap.org/node/24501909",
+          "reviewer": "Codex visual estimate, 2026-09-08",
+          "kind": "street-junction",
+          "predicted": [
+            -0.14147263681833858,
+            51.48908311688825
+          ],
+          "errorMetres": 6.082762530258709
+        },
+        {
+          "id": "alderney-gloucester",
+          "role": "fit",
+          "pixel": [
+            540,
+            336
+          ],
+          "coordinates": [
+            -0.1420345,
+            51.4887076
+          ],
+          "reference": "https://www.openstreetmap.org/node/24789219",
+          "reviewer": "Codex visual estimate, 2026-09-08",
+          "kind": "street-junction",
+          "predicted": [
+            -0.1419479368183386,
+            51.48869861688825
+          ],
+          "errorMetres": 6.082762530258709
+        },
+        {
+          "id": "cambridge-charlwood",
+          "role": "fit",
+          "pixel": [
+            819,
+            377
+          ],
+          "coordinates": [
+            -0.1403781,
+            51.4885384
+          ],
+          "reference": "https://www.openstreetmap.org/node/24789164",
+          "reviewer": "Codex visual estimate, 2026-09-08",
+          "kind": "street-junction",
+          "predicted": [
+            -0.14029153681833859,
+            51.488529416888255
+          ],
+          "errorMetres": 6.082762530258716
+        },
+        {
+          "id": "alderney-charlwood",
+          "role": "check",
+          "pixel": [
+            737,
+            484
+          ],
+          "coordinates": [
+            -0.1408305,
+            51.4881444
+          ],
+          "reference": "https://www.openstreetmap.org/node/24789201",
+          "reviewer": "Codex visual estimate, 2026-09-08",
+          "kind": "street-junction",
+          "predicted": [
+            -0.1407539998582734,
+            51.488125782373174
+          ],
+          "errorMetres": 5.693133577587954
+        },
+        {
+          "id": "winchester-gloucester",
+          "role": "check",
+          "pixel": [
+            461,
+            437
+          ],
+          "coordinates": [
+            -0.1424658,
+            51.4883226
+          ],
+          "reference": "https://www.openstreetmap.org/node/24789239",
+          "reviewer": "Codex visual estimate, 2026-09-08",
+          "kind": "street-junction",
+          "predicted": [
+            -0.1423939072590633,
+            51.48831769092122
+          ],
+          "errorMetres": 5.013015291883031
+        },
+        {
+          "id": "st-georges-gloucester",
+          "role": "check",
+          "pixel": [
+            708,
+            130
+          ],
+          "coordinates": [
+            -0.1410314,
+            51.4895029
+          ],
+          "reference": "https://www.openstreetmap.org/node/24501708",
+          "reviewer": "Codex visual estimate, 2026-09-08",
+          "kind": "street-junction",
+          "predicted": [
+            -0.1409977461280997,
+            51.489475233232056
+          ],
+          "errorMetres": 3.863535898433253
+        }
+      ]
+    },
+    "features": []
+  }
+}

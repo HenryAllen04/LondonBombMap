@@ -9,9 +9,9 @@ const sans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "London Before — Every street has a before",
+  title: "Pimlico, lifted from London · London Before",
   description:
-    "Explore Pimlico with a draft wartime damage layer, address search and a modern 2D or 3D map.",
+    "Explore a 3D Pimlico island with modern buildings, the Thames, and the original wartime map in its modern place.",
   robots: { index: false, follow: false },
 };
 

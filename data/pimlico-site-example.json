@@ -1,0 +1,8 @@
+{
+  "sourceImageSha256": "b88fd0e140982425671b24ffaae38daa0949eafcea249b455786c22b24f26b18",
+  "buildingId": "a37353db-6983-493e-804e-33e6491ef7cf",
+  "name": "Russell House trial site",
+  "boundary": [[1128, 417], [1173, 451], [1153, 477], [1108, 443]],
+  "relationship": "rebuilt-site",
+  "note": "Provisional boundary drawn from the supplied watermarked paper. The user identified the replacement layout. Check the site edges and correspondence before marking this link checked."
+}

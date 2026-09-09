@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "id": "pimlico-watermarked-sheet",
+    "url": "/proto/london-island/compare/overlay/source",
+    "width": 2060,
+    "height": 1290,
+    "sha256": "b88fd0e140982425671b24ffaae38daa0949eafcea249b455786c22b24f26b18",
+    "description": "User-supplied watermarked full sheet; local working reference"
+  },
+  "selection": {
+    "x": 1078,
+    "y": 385,
+    "width": 125,
+    "height": 120
+  },
+  "model": "similarity",
+  "adjustment": {
+    "east": 0,
+    "north": 0,
+    "rotation": 0,
+    "scale": 1
+  },
+  "points": [
+    {
+      "id": "cambridge-gloucester",
+      "role": "fit",
+      "pixel": [
+        1121.813,
+        412.058
+      ],
+      "coordinates": [
+        -0.1415592,
+        51.4890921
+      ],
+      "reference": "https://www.openstreetmap.org/node/24501909",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "alderney-gloucester",
+      "role": "fit",
+      "pixel": [
+        1097.002,
+        442.046
+      ],
+      "coordinates": [
+        -0.1420345,
+        51.4887076
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789219",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "cambridge-charlwood",
+      "role": "fit",
+      "pixel": [
+        1179.449,
+        454.062
+      ],
+      "coordinates": [
+        -0.1403781,
+        51.4885384
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789164",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "alderney-charlwood",
+      "role": "check",
+      "pixel": [
+        1155.229,
+        485.519
+      ],
+      "coordinates": [
+        -0.1408305,
+        51.4881444
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789201",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "winchester-gloucester",
+      "role": "check",
+      "pixel": [
+        1073.668,
+        471.74
+      ],
+      "coordinates": [
+        -0.1424658,
+        51.4883226
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789239",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "st-georges-gloucester",
+      "role": "check",
+      "pixel": [
+        1146.624,
+        381.482
+      ],
+      "coordinates": [
+        -0.1410314,
+        51.4895029
+      ],
+      "reference": "https://www.openstreetmap.org/node/24501708",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    }
+  ],
+  "display": {
+    "opacity": 0.7,
+    "outlines": true
+  },
+  "view": {
+    "stage": "align",
+    "sheet": [
+      1023.5,
+      367,
+      234,
+      156
+    ],
+    "map": [
+      -247.9146236078927,
+      37.33067715750798,
+      333.86215688986994,
+      222.5747712599133
+    ]
+  },
+  "savedAt": "2026-09-08T21:26:35.591Z",
+  "artifact": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "id": "selected-study-area",
+        "properties": {
+          "sourceImageSha256": "b88fd0e140982425671b24ffaae38daa0949eafcea249b455786c22b24f26b18",
+          "status": "unverified-local-alignment"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -0.14242646581105453,
+                51.489433952735055
+              ],
+              [
+                -0.1398830142313086,
+                51.489416277828
+              ],
+              [
+                -0.13991026529945477,
+                51.4878959419328
+              ],
+              [
+                -0.1424537168792007,
+                51.487913616839855
+              ],
+              [
+                -0.14242646581105453,
+                51.489433952735055
+              ]
+            ]
+          ]
+        }
+      }
+    ],
+    "metadata": {
+      "source": {
+        "id": "pimlico-watermarked-sheet",
+        "url": "/proto/london-island/compare/overlay/source",
+        "width": 2060,
+        "height": 1290,
+        "sha256": "b88fd0e140982425671b24ffaae38daa0949eafcea249b455786c22b24f26b18",
+        "description": "User-supplied watermarked full sheet; local working reference"
+      },
+      "selection": {
+        "x": 1078,
+        "y": 385,
+        "width": 125,
+        "height": 120
+      },
+      "transform": {
+        "pixelToLocalMetres": [
+          1.4103649321175453,
+          0.015740565228270498,
+          -0.015740565228270498,
+          1.4103649321174316,
+          -1682.5001987164378,
+          -496.94644664763496
+        ],
+        "localOrigin": [
+          -0.14,
+          51.49
+        ],
+        "axes": [
+          "east",
+          "south"
+        ],
+        "metresPerDegree": 111320,
+        "longitudeScaleLatitude": 51.49,
+        "pivot": [
+          1138,
+          443
+        ]
+      },
+      "scope": "Selected area only; no validated full-sheet registration or building colour assignments",
+      "residuals": [
+        {
+          "id": "cambridge-gloucester",
+          "role": "fit",
+          "errorMetres": 1.4847236712250553,
+          "predicted": [
+            -0.14154112052022977,
+            51.489084947204
+          ]
+        },
+        {
+          "id": "alderney-gloucester",
+          "role": "fit",
+          "errorMetres": 1.2708822711688126,
+          "predicted": [
+            -0.1420527751793201,
+            51.488708523520735
+          ]
+        },
+        {
+          "id": "cambridge-charlwood",
+          "role": "fit",
+          "errorMetres": 0.6935755805076158,
+          "predicted": [
+            -0.14037790430044797,
+            51.48854462927527
+          ]
+        },
+        {
+          "id": "alderney-charlwood",
+          "role": "check",
+          "errorMetres": 3.332108178058764,
+          "predicted": [
+            -0.14087786711896183,
+            51.488149510579795
+          ]
+        },
+        {
+          "id": "winchester-gloucester",
+          "role": "check",
+          "errorMetres": 4.964776736009201,
+          "predicted": [
+            -0.1425343096494272,
+            51.48833561581372
+          ]
+        },
+        {
+          "id": "st-georges-gloucester",
+          "role": "check",
+          "errorMetres": 3.796432371791472,
+          "predicted": [
+            -0.1410293323309055,
+            51.48946882053314
+          ]
+        }
+      ],
+      "checks": {
+        "count": 3,
+        "rmseMetres": 4.089207409033788,
+        "maxMetres": 4.964776736009201
+      }
+    }
+  }
+}

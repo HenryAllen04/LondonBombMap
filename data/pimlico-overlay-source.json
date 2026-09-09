@@ -1,0 +1,130 @@
+{
+  "source": {
+    "id": "pimlico-watermarked-sheet",
+    "url": "/proto/london-island/compare/overlay/source",
+    "width": 2060,
+    "height": 1290,
+    "sha256": "b88fd0e140982425671b24ffaae38daa0949eafcea249b455786c22b24f26b18",
+    "description": "User-supplied watermarked full sheet; local working reference"
+  },
+  "selection": {
+    "x": 1078,
+    "y": 385,
+    "width": 125,
+    "height": 120
+  },
+  "pivot": [
+    1138,
+    443
+  ],
+  "points": [
+    {
+      "id": "cambridge-gloucester",
+      "role": "fit",
+      "pixel": [
+        1121.813,
+        412.058
+      ],
+      "coordinates": [
+        -0.1415592,
+        51.4890921
+      ],
+      "reference": "https://www.openstreetmap.org/node/24501909",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "alderney-gloucester",
+      "role": "fit",
+      "pixel": [
+        1097.002,
+        442.046
+      ],
+      "coordinates": [
+        -0.1420345,
+        51.4887076
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789219",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "cambridge-charlwood",
+      "role": "fit",
+      "pixel": [
+        1179.449,
+        454.062
+      ],
+      "coordinates": [
+        -0.1403781,
+        51.4885384
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789164",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "alderney-charlwood",
+      "role": "check",
+      "pixel": [
+        1155.229,
+        485.519
+      ],
+      "coordinates": [
+        -0.1408305,
+        51.4881444
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789201",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "winchester-gloucester",
+      "role": "check",
+      "pixel": [
+        1073.668,
+        471.74
+      ],
+      "coordinates": [
+        -0.1424658,
+        51.4883226
+      ],
+      "reference": "https://www.openstreetmap.org/node/24789239",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    },
+    {
+      "id": "st-georges-gloucester",
+      "role": "check",
+      "pixel": [
+        1146.624,
+        381.482
+      ],
+      "coordinates": [
+        -0.1410314,
+        51.4895029
+      ],
+      "reference": "https://www.openstreetmap.org/node/24501708",
+      "reviewer": "Codex visual estimate, 2026-09-08",
+      "provenance": "Starting estimate transferred by image feature matching from the earlier manually picked screenshot; not independently verified on this sheet."
+    }
+  ],
+  "seedNote": "Starting landmarks transferred from the earlier screenshot using 191 image-feature inliers. Geographic positions remain prior manual estimates. Neither this local fit nor the full sheet is independently verified.",
+  "exclusions": [
+    {
+      "x": 1080,
+      "y": 483,
+      "width": 980,
+      "height": 323,
+      "reason": "Conservative extent of the visible watermark band; unknown colour evidence."
+    }
+  ],
+  "rebuiltBuildingId": "a37353db-6983-493e-804e-33e6491ef7cf",
+  "mapExtent": {
+    "x": 220,
+    "y": 80,
+    "width": 1610,
+    "height": 1080,
+    "provenance": "Conservative inner map frame estimated from the supplied image; excludes black backing, sheet title and footer. Review for a replacement scan."
+  }
+}

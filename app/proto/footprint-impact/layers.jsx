@@ -1,0 +1,3 @@
+export default function Layers() {
+  return <div className="impact-direction"><span className="impact-eyebrow">04 / SEPARATED LAYERS</span><h2>One site. <br/>Three different parts.</h2><p>Pull the layers apart to reveal what the modern model conceals. Every piece keeps its position on the map.</p><ol className="impact-stack-key"><li><b>03</b><span>Modern area without classified damage<small>Raised to the top</small></span></li><li><b>02</b><span>Damage intersecting modern roofs<small>Raised to the middle</small></span></li><li><b>01</b><span>Historic damage outside today’s model<small>Retained on the ground</small></span></li></ol></div>;
+}
