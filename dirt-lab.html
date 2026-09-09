@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dirt Lab — island underside generator</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #1a1d23;
+    --panel-border: #2a2e36;
+    --text: #e8eaed;
+    --text-dim: #9aa0a8;
+    --accent: #d9a05b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  #scene { position: fixed; inset: 0; }
+  #panel {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    bottom: 16px;
+    width: 248px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    overflow-y: auto;
+    user-select: none;
+  }
+  h1 { font-size: 13px; font-weight: 600; }
+  h1 span { display: block; color: var(--text-dim); font-weight: 400; font-size: 11px; margin-top: 2px; }
+  .group-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin-bottom: -6px;
+  }
+  .seg { display: flex; gap: 4px; }
+  .seg button {
+    flex: 1;
+    padding: 6px 4px;
+    background: transparent;
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    color: var(--text);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .seg button:hover { border-color: #3a3f49; }
+  .seg button[aria-pressed="true"] {
+    border-color: var(--accent);
+    background: rgba(217, 160, 91, 0.1);
+  }
+  .slider { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; }
+  .slider label { font-size: 12px; color: var(--text); }
+  .slider output { font: 11px ui-monospace, monospace; color: var(--text-dim); }
+  .slider input { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); height: 18px; }
+  .actions { display: flex; gap: 6px; }
+  .actions button {
+    flex: 1;
+    padding: 9px;
+    border-radius: 7px;
+    border: 1px solid var(--panel-border);
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .actions button:hover { border-color: #3a3f49; }
+  #btn-generate { background: var(--accent); border-color: var(--accent); color: #1a1206; }
+  #btn-generate:hover { filter: brightness(1.08); }
+  .actions button:active { transform: translateY(1px); }
+  #seed-line { font: 11px ui-monospace, monospace; color: var(--text-dim); text-align: center; }
+  #toast { font-size: 11px; color: var(--accent); text-align: center; min-height: 14px; }
+  #saves { display: flex; flex-direction: column; gap: 4px; }
+  #saves .save-row { display: flex; gap: 4px; }
+  #saves .save-row > button:first-child {
+    flex: 1;
+    text-align: left;
+    padding: 6px 8px;
+    background: transparent;
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    color: var(--text);
+    font: 11px ui-monospace, monospace;
+    cursor: pointer;
+  }
+  #saves .save-row > button:first-child:hover { border-color: var(--accent); }
+  #saves .del {
+    width: 26px;
+    background: transparent;
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  #saves .del:hover { color: #d97b6c; border-color: #d97b6c; }
+  #hint { font-size: 11px; color: var(--text-dim); text-align: center; margin-top: auto; }
+</style>
+</head>
+<body>
+<div id="scene"></div>
+<div id="panel">
+  <h1>Dirt lab<span>underside of the lifted map piece</span></h1>
+
+  <div class="group-label">Silhouette</div>
+  <div class="seg" data-key="silhouette">
+    <button data-val="slab">Slab</button>
+    <button data-val="cone">Cone</button>
+    <button data-val="spiky">Spiky</button>
+  </div>
+
+  <div class="group-label">Top outline</div>
+  <div class="seg" data-key="outline">
+    <button data-val="cut">Straight cut</button>
+    <button data-val="blob">Blob</button>
+  </div>
+
+  <div class="group-label">Dirt pattern</div>
+  <div class="seg" data-key="pattern">
+    <button data-val="solid">Solid</button>
+    <button data-val="strata">Strata</button>
+    <button data-val="speckled">Speckled</button>
+  </div>
+
+  <div class="group-label">Extras</div>
+  <div class="seg" data-key="extras">
+    <button data-val="none">None</button>
+    <button data-val="roots">Roots</button>
+    <button data-val="debris">Debris</button>
+  </div>
+
+  <div id="sliders"></div>
+
+  <div class="actions">
+    <button id="btn-generate">Generate</button>
+    <button id="btn-save">Save</button>
+  </div>
+  <div id="seed-line"></div>
+  <div id="toast"></div>
+
+  <div class="group-label">Saved</div>
+  <div id="saves"></div>
+
+  <div id="hint">click canvas · new seed · drag to orbit</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ---------- seeded randomness ----------
+
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// periodic in theta so the mesh seam is invisible
+function makeAngularNoise(rand, harmonics, amplitude) {
+  const terms = [];
+  for (let i = 0; i < harmonics; i++) {
+    terms.push({
+      freq: 1 + Math.floor(rand() * 6),
+      phase: rand() * Math.PI * 2,
+      amp: amplitude * (0.4 + rand() * 0.6) / harmonics,
+    });
+  }
+  return (theta, t) => {
+    let v = 0;
+    for (const { freq, phase, amp } of terms) {
+      v += Math.sin(theta * freq + phase + t * 3.1) * amp;
+    }
+    return v;
+  };
+}
+
+// ---------- config ----------
+
+const DEFAULTS = {
+  seed: 1,
+  silhouette: 'slab',
+  outline: 'cut',
+  pattern: 'solid',
+  extras: 'none',
+  depth: 1.1,
+  jag: 0.18,
+  facets: 30,
+  darkness: 0.35,
+  warmth: 0.55,
+  bands: 5,
+  spikes: 5,
+};
+
+const SLIDERS = [
+  ['depth', 'Depth', 0.4, 2.2, 0.05],
+  ['jag', 'Jaggedness', 0, 0.45, 0.01],
+  ['facets', 'Facet count', 12, 72, 1],
+  ['darkness', 'Darkness', 0, 1, 0.01],
+  ['warmth', 'Warmth', 0, 1, 0.01],
+  ['bands', 'Strata bands', 2, 8, 1],
+  ['spikes', 'Spike count', 2, 10, 1],
+];
+
+let config = { ...DEFAULTS, seed: Math.floor(Math.random() * 1e9) };
+
+// ---------- color ----------
+
+// hue/sat/light anchors for the dirt ramp; darkness and warmth knobs bend them
+function makeRamp(cfg) {
+  const hue = 0.055 + cfg.warmth * 0.035;
+  const sat = 0.28 + cfg.warmth * 0.24;
+  const lTop = (0.5 - cfg.darkness * 0.3);
+  const lBot = (0.3 - cfg.darkness * 0.22);
+  return (t) => {
+    const l = THREE.MathUtils.lerp(lTop, Math.max(0.04, lBot), t);
+    const s = sat * (1 - t * 0.35);
+    return new THREE.Color().setHSL(hue, s, Math.max(0.03, l));
+  };
+}
+
+function colorAt(cfg, ramp, t, theta, bandNoise) {
+  if (cfg.pattern === 'strata') {
+    const wobble = bandNoise(theta, 0) * 0.05;
+    const band = Math.min(cfg.bands - 1, Math.floor(THREE.MathUtils.clamp(t + wobble, 0, 0.999) * cfg.bands));
+    const c = ramp((band + 0.5) / cfg.bands);
+    // alternate bands get a lightness kick so the layering reads
+    if (band % 2 === 1) c.offsetHSL(0.01, 0.03, 0.07);
+    return c;
+  }
+  return ramp(t);
+}
+
+// ---------- rim outline ----------
+
+function makeRimRadius(cfg, rand, R) {
+  if (cfg.outline === 'cut') {
+    // straight-edged polygon: the piece was sliced out of the map
+    const n = 5 + Math.floor(rand() * 4);
+    const corners = [];
+    const start = rand() * Math.PI * 2;
+    const spacing = (Math.PI * 2) / n;
+    for (let i = 0; i < n; i++) {
+      const a = start + (i + (rand() - 0.5) * 0.7) * spacing;
+      const r = R * (0.82 + rand() * 0.32);
+      corners.push({ a, x: Math.cos(a) * r, z: Math.sin(a) * r });
+    }
+    return (theta) => {
+      // normalize theta near the corner angles
+      const base = corners[0].a;
+      let th = theta;
+      while (th < base) th += Math.PI * 2;
+      let i = corners.length - 1;
+      for (let k = 0; k < corners.length; k++) {
+        const next = k + 1 < corners.length ? corners[k + 1].a : corners[0].a + Math.PI * 2;
+        if (th >= corners[k].a && th < next) { i = k; break; }
+      }
+      const p1 = corners[i];
+      const p2 = corners[(i + 1) % corners.length];
+      // ray (cos th, sin th) vs segment p1→p2
+      const dx = Math.cos(th), dz = Math.sin(th);
+      const ex = p2.x - p1.x, ez = p2.z - p1.z;
+      const denom = dx * ez - dz * ex;
+      if (Math.abs(denom) < 1e-6) return Math.hypot(p1.x, p1.z);
+      return (p1.x * ez - p1.z * ex) / denom;
+    };
+  }
+  const noise = makeAngularNoise(rand, 4, 0.28);
+  return (theta) => R * (1 + noise(theta, 0) * (0.4 + cfg.jag));
+}
+
+// ---------- silhouette profiles ----------
+
+function makeProfile(cfg) {
+  switch (cfg.silhouette) {
+    case 'cone':
+      return (t) => Math.pow(1 - t, 1.4);
+    case 'slab':
+      // near-vertical torn sides, then a fast chamfer to the bottom
+      return (t) => t < 0.7
+        ? 1 - t * 0.1
+        : 0.93 * Math.pow(Math.max(0, 1 - (t - 0.7) / 0.3), 0.65);
+    case 'spiky':
+      // shallow body; the depth is carried by the spikes added after
+      return (t) => t < 0.55
+        ? 1 - t * 0.12
+        : 0.934 * Math.pow(Math.max(0, 1 - (t - 0.55) / 0.45), 0.8);
+  }
+}
+
+// ---------- build ----------
+
+function render(cfg) {
+  const rand = mulberry32(cfg.seed);
+  const surfNoise = makeAngularNoise(rand, 6, cfg.jag);
+  const bandNoise = makeAngularNoise(rand, 3, 1);
+  const ramp = makeRamp(cfg);
+  const profile = makeProfile(cfg);
+  const R = 1.6;
+  const rimRadius = makeRimRadius(cfg, rand, R);
+
+  const bodyDepth = cfg.silhouette === 'spiky' ? cfg.depth * 0.45 : cfg.depth;
+  const segs = Math.round(cfg.facets);
+  const rings = THREE.MathUtils.clamp(Math.round(segs * 0.4), 6, 26);
+
+  const group = new THREE.Group();
+  const positions = [], colors = [], indices = [], ringStart = [];
+  // keep vertical noise below the ring spacing so rings never fold into slits
+  const yAmp = Math.min(cfg.jag * 0.4, (bodyDepth / rings) * 0.35);
+
+  for (let i = 0; i <= rings; i++) {
+    const t = i / rings;
+    ringStart.push(positions.length / 3);
+    const prof = profile(t);
+    for (let j = 0; j < segs; j++) {
+      const theta = (j / segs) * Math.PI * 2;
+      const jitter = i === 0 ? 0 : (rand() - 0.5) * cfg.jag * 0.5;
+      const noise = i === 0 ? 0 : surfNoise(theta, t) * (0.3 + t);
+      const r = Math.max(0.02, rimRadius(theta) * prof * (1 + noise + jitter));
+      const yOff = i === 0 ? 0
+        : THREE.MathUtils.clamp(surfNoise(theta + 9, t) * 0.4 + jitter * 0.3, -yAmp, yAmp);
+      const y = -bodyDepth * t + yOff;
+      positions.push(Math.cos(theta) * r, y, Math.sin(theta) * r);
+      const c = colorAt(cfg, ramp, t, theta, bandNoise);
+      colors.push(c.r, c.g, c.b);
+    }
+  }
+
+  const tipIndex = positions.length / 3;
+  positions.push(
+    surfNoise(0, 1) * 0.2,
+    -bodyDepth * (1 + rand() * 0.1),
+    surfNoise(3, 1) * 0.2
+  );
+  const tipColor = colorAt(cfg, ramp, 1, 0, bandNoise);
+  colors.push(tipColor.r, tipColor.g, tipColor.b);
+
+  for (let i = 0; i < rings; i++) {
+    for (let j = 0; j < segs; j++) {
+      const jn = (j + 1) % segs;
+      const a = ringStart[i] + j, b = ringStart[i] + jn;
+      const c = ringStart[i + 1] + j, d = ringStart[i + 1] + jn;
+      indices.push(a, b, c, b, d, c);
+    }
+  }
+  for (let j = 0; j < segs; j++) {
+    const jn = (j + 1) % segs;
+    indices.push(ringStart[rings] + j, ringStart[rings] + jn, tipIndex);
+  }
+
+  // top cap — stand-in for the map surface
+  const topC = new THREE.Color(0x8aa86a);
+  const capCenter = positions.length / 3;
+  positions.push(0, 0.02, 0);
+  colors.push(topC.r, topC.g, topC.b);
+  const capRing = positions.length / 3;
+  for (let j = 0; j < segs; j++) {
+    const theta = (j / segs) * Math.PI * 2;
+    const r = rimRadius(theta);
+    positions.push(Math.cos(theta) * r, 0.02, Math.sin(theta) * r);
+    colors.push(topC.r, topC.g, topC.b);
+  }
+  for (let j = 0; j < segs; j++) {
+    const jn = (j + 1) % segs;
+    indices.push(capCenter, capRing + j, capRing + jn);
+  }
+
+  let geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geo.setIndex(indices);
+  geo = geo.toNonIndexed();
+
+  // per-face shading variation; speckled pattern drops in darker stones
+  const col = geo.getAttribute('color');
+  const stone = new THREE.Color().setHSL(0.08, 0.08, Math.max(0.06, 0.2 - cfg.darkness * 0.1));
+  for (let f = 0; f < col.count; f += 3) {
+    const isTop = Math.abs(col.getX(f) - topC.r) < 0.001 && Math.abs(col.getY(f) - topC.g) < 0.001;
+    let shade = 1 + (rand() - 0.5) * (isTop ? 0.03 : cfg.pattern === 'strata' ? 0.07 : 0.14);
+    let mix = 0;
+    if (!isTop && cfg.pattern === 'speckled' && rand() < 0.1) mix = 0.55 + rand() * 0.35;
+    for (let v = 0; v < 3; v++) {
+      const c = new THREE.Color(col.getX(f + v), col.getY(f + v), col.getZ(f + v));
+      c.multiplyScalar(shade);
+      if (mix) c.lerp(stone, mix);
+      col.setXYZ(f + v,
+        THREE.MathUtils.clamp(c.r, 0, 1),
+        THREE.MathUtils.clamp(c.g, 0, 1),
+        THREE.MathUtils.clamp(c.b, 0, 1));
+    }
+  }
+  geo.computeVertexNormals();
+
+  const mat = new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    flatShading: true,
+    roughness: 0.95,
+    metalness: 0,
+  });
+  group.add(new THREE.Mesh(geo, mat));
+
+  if (cfg.silhouette === 'spiky') addSpikes(group, cfg, rand, ramp, rimRadius, bodyDepth);
+  if (cfg.extras === 'roots') addRoots(group, cfg, rand, rimRadius, profile, bodyDepth);
+  if (cfg.extras === 'debris') addDebris(group, cfg, rand, ramp);
+
+  return group;
+}
+
+function addSpikes(group, cfg, rand, ramp, rimRadius, bodyDepth) {
+  const n = Math.round(cfg.spikes);
+  for (let i = 0; i < n; i++) {
+    const theta = rand() * Math.PI * 2;
+    const rFrac = Math.sqrt(rand()) * 0.75;
+    const r = rimRadius(theta) * rFrac;
+    const px = Math.cos(theta) * r;
+    const pz = Math.sin(theta) * r;
+    // longer spikes near the middle
+    const len = (cfg.depth - bodyDepth) * (0.4 + rand() * 0.6) * (1.2 - rFrac * 0.6);
+    const rad = 0.1 + rand() * 0.22;
+    const geo = new THREE.ConeGeometry(rad, len, 4 + Math.floor(rand() * 3), 1, true);
+    const c = ramp(0.45 + rand() * 0.4);
+    c.multiplyScalar(0.9 + rand() * 0.2);
+    const mat = new THREE.MeshStandardMaterial({ color: c, flatShading: true, roughness: 0.95 });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.x = Math.PI; // point down
+    mesh.rotation.z = (rand() - 0.5) * 0.35;
+    mesh.rotation.y = rand() * Math.PI;
+    // embed the base inside the body so the joint is hidden
+    mesh.position.set(px, -bodyDepth * (0.45 + rFrac * 0.4) - len / 2 + 0.12, pz);
+    group.add(mesh);
+  }
+}
+
+function addRoots(group, cfg, rand, rimRadius, profile, bodyDepth) {
+  const n = 5 + Math.floor(rand() * 4);
+  const mat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color().setHSL(0.07, 0.35, Math.max(0.05, 0.16 - cfg.darkness * 0.06)),
+    roughness: 1,
+  });
+  for (let i = 0; i < n; i++) {
+    const theta = rand() * Math.PI * 2;
+    const t = 0.1 + rand() * 0.35;
+    const startR = rimRadius(theta) * profile(t) * (0.55 + rand() * 0.2);
+    const sx = Math.cos(theta) * startR;
+    const sz = Math.sin(theta) * startR;
+    const startY = -bodyDepth * t + 0.06;
+    const len = 0.3 + rand() * 0.45;
+    const pts = [];
+    for (let k = 0; k <= 3; k++) {
+      const f = k / 3;
+      pts.push(new THREE.Vector3(
+        sx + (rand() - 0.5) * 0.14 * f,
+        startY - len * f,
+        sz + (rand() - 0.5) * 0.14 * f
+      ));
+    }
+    const geo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 10, 0.014 + rand() * 0.012, 5, false);
+    group.add(new THREE.Mesh(geo, mat));
+  }
+}
+
+function addDebris(group, cfg, rand, ramp) {
+  const n = 3 + Math.floor(rand() * 3);
+  for (let i = 0; i < n; i++) {
+    const size = 0.06 + rand() * 0.12;
+    const geo = new THREE.DodecahedronGeometry(size, 0);
+    const pos = geo.getAttribute('position');
+    for (let v = 0; v < pos.count; v++) {
+      const k = 1 + (rand() - 0.5) * 0.5;
+      pos.setXYZ(v, pos.getX(v) * k, pos.getY(v) * k, pos.getZ(v) * k);
+    }
+    geo.computeVertexNormals();
+    const mat = new THREE.MeshStandardMaterial({
+      color: ramp(0.3 + rand() * 0.5),
+      flatShading: true,
+      roughness: 0.95,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    const theta = rand() * Math.PI * 2;
+    const r = 0.4 + rand() * 1.1;
+    mesh.position.set(Math.cos(theta) * r, -cfg.depth * (0.55 + rand() * 0.7), Math.sin(theta) * r);
+    mesh.rotation.set(rand() * Math.PI, rand() * Math.PI, rand() * Math.PI);
+    mesh.userData.bobPhase = rand() * Math.PI * 2;
+    mesh.userData.bobBase = mesh.position.y;
+    group.add(mesh);
+  }
+}
+
+// ---------- scene ----------
+
+const container = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+container.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0f1115);
+
+const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 60);
+camera.position.set(4.2, 0.9, 4.8);
+function frameCamera() {
+  const aspect = window.innerWidth / window.innerHeight;
+  const dist = 6.4 * Math.max(1, 1.3 / aspect);
+  camera.position.normalize().multiplyScalar(dist);
+}
+frameCamera();
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, -0.5, 0);
+controls.minDistance = 2;
+controls.maxDistance = 18;
+
+scene.add(new THREE.HemisphereLight(0xcfd8e6, 0x3a2e22, 0.9));
+const key = new THREE.DirectionalLight(0xfff2dd, 1.6);
+key.position.set(4, 6, 3);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0x8899bb, 0.4);
+fill.position.set(-4, -2, -3);
+scene.add(fill);
+
+// ---------- state + UI ----------
+
+let island = null;
+
+function rerender() {
+  if (island) {
+    island.traverse((o) => {
+      if (o.geometry) o.geometry.dispose();
+      if (o.material) o.material.dispose();
+    });
+    scene.remove(island);
+  }
+  island = render(config);
+  scene.add(island);
+  document.getElementById('seed-line').textContent = `seed ${config.seed}`;
+}
+
+function newSeed() {
+  config.seed = Math.floor(Math.random() * 1e9);
+  rerender();
+}
+
+// segmented controls
+function syncSegs() {
+  document.querySelectorAll('.seg').forEach((seg) => {
+    const key = seg.dataset.key;
+    seg.querySelectorAll('button').forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.val === config[key]));
+    });
+  });
+}
+document.querySelectorAll('.seg').forEach((seg) => {
+  seg.querySelectorAll('button').forEach((b) => {
+    b.addEventListener('click', () => {
+      config[seg.dataset.key] = b.dataset.val;
+      syncSegs();
+      rerender();
+    });
+  });
+});
+
+// sliders
+const sliderEls = {};
+const slidersHost = document.getElementById('sliders');
+for (const [key, label, min, max, step] of SLIDERS) {
+  const wrap = document.createElement('div');
+  wrap.className = 'slider';
+  wrap.innerHTML = `<label for="s-${key}">${label}</label><output></output>
+    <input id="s-${key}" type="range" min="${min}" max="${max}" step="${step}">`;
+  const input = wrap.querySelector('input');
+  const out = wrap.querySelector('output');
+  input.addEventListener('input', () => {
+    config[key] = parseFloat(input.value);
+    out.textContent = input.value;
+    rerender();
+  });
+  slidersHost.appendChild(wrap);
+  sliderEls[key] = { input, out };
+}
+function syncSliders() {
+  for (const [key] of SLIDERS) {
+    sliderEls[key].input.value = config[key];
+    sliderEls[key].out.textContent = String(config[key]);
+  }
+}
+
+function applyConfig(cfg) {
+  config = { ...DEFAULTS, ...cfg };
+  syncSegs();
+  syncSliders();
+  rerender();
+}
+
+// ---------- save rail ----------
+
+const SAVE_KEY = 'dirt-lab-saves';
+function loadSaves() {
+  try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || []; }
+  catch { return []; }
+}
+function persistSaves(saves) {
+  localStorage.setItem(SAVE_KEY, JSON.stringify(saves));
+}
+function renderSaves() {
+  const host = document.getElementById('saves');
+  host.innerHTML = '';
+  const saves = loadSaves();
+  saves.forEach((cfg, i) => {
+    const row = document.createElement('div');
+    row.className = 'save-row';
+    const apply = document.createElement('button');
+    apply.textContent = `${cfg.name || `#${i + 1}`} · ${cfg.silhouette} · ${cfg.pattern} · ${cfg.seed}`;
+    apply.addEventListener('click', () => applyConfig(cfg));
+    const del = document.createElement('button');
+    del.className = 'del';
+    del.textContent = '×';
+    del.setAttribute('aria-label', `Delete saved config ${i + 1}`);
+    del.addEventListener('click', () => {
+      const s = loadSaves();
+      s.splice(i, 1);
+      persistSaves(s);
+      renderSaves();
+    });
+    row.append(apply, del);
+    host.appendChild(row);
+  });
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.textContent = ''; }, 2500);
+}
+
+document.getElementById('btn-save').addEventListener('click', async () => {
+  const saves = loadSaves();
+  saves.push({ ...config });
+  persistSaves(saves);
+  renderSaves();
+  const json = JSON.stringify(config, null, 2);
+  try {
+    await navigator.clipboard.writeText(json);
+    toast('saved · config copied to clipboard');
+  } catch {
+    console.log('dirt-lab config:', json);
+    toast('saved · config logged to console');
+  }
+});
+
+document.getElementById('btn-generate').addEventListener('click', newSeed);
+
+// first run: seed the rail with the three v1 directions
+if (loadSaves().length === 0) {
+  persistSaves([
+    { ...DEFAULTS, name: 'chunky', seed: 114681427, silhouette: 'cone', outline: 'blob', pattern: 'solid', extras: 'debris', depth: 1.5, jag: 0.22, facets: 22, darkness: 0.3, warmth: 0.7 },
+    { ...DEFAULTS, name: 'strata', seed: 79025253, silhouette: 'cone', outline: 'blob', pattern: 'strata', extras: 'none', depth: 1.4, jag: 0.08, facets: 56, darkness: 0.3, warmth: 0.6, bands: 6 },
+    { ...DEFAULTS, name: 'craggy', seed: 177066722, silhouette: 'cone', outline: 'blob', pattern: 'speckled', extras: 'roots', depth: 1.7, jag: 0.3, facets: 44, darkness: 0.55, warmth: 0.35 },
+  ]);
+}
+renderSaves();
+
+// click canvas (not drag) = new seed
+let downAt = null;
+renderer.domElement.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener('pointerup', (e) => {
+  if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 6) newSeed();
+  downAt = null;
+});
+
+window.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'g' || e.key === 'G') newSeed();
+});
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  frameCamera();
+});
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => {
+  const t = clock.getElapsedTime();
+  if (island && !reducedMotion) {
+    island.rotation.y = t * 0.1;
+    island.children.forEach((o) => {
+      if (o.userData.bobBase !== undefined) {
+        o.position.y = o.userData.bobBase + Math.sin(t * 0.8 + o.userData.bobPhase) * 0.04;
+      }
+    });
+  }
+  controls.update();
+  renderer.render(scene, camera);
+});
+
+syncSegs();
+syncSliders();
+rerender();
+</script>
+</body>
+</html>
