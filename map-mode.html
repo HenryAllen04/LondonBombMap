@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Map mode — lift a borough</title>
+<style>
+  :root {
+    --panel: #1a1d23;
+    --panel-border: #2a2e36;
+    --text: #e8eaed;
+    --text-dim: #9aa0a8;
+    --accent: #d9a05b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: #0f1115;
+    color: var(--text);
+    font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  #hud {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    width: 224px;
+    user-select: none;
+    pointer-events: none;
+  }
+  #hud h1 { font-size: 13px; font-weight: 600; }
+  #hud h1 span { display: block; color: var(--text-dim); font-weight: 400; font-size: 11px; margin-top: 2px; }
+  #borough {
+    margin-top: 8px;
+    min-height: 18px;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  #hint { margin-top: 4px; font-size: 11px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+<div id="hud">
+  <h1>Map mode<span>London boroughs · dirt config 416909661</span></h1>
+  <div id="borough"></div>
+  <div id="hint">click a borough to lift it out · drag to orbit</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { buildDirtForOutline, resampleOutline } from './dirt.js';
+
+const [dirtConfig, boroughData] = await Promise.all([
+  fetch('./dirt-config.json').then((r) => r.json()),
+  fetch('./boroughs.json').then((r) => r.json()),
+]);
+
+// ---------- projection: lon/lat → world x/z, map ~9 units wide ----------
+
+let minLon = Infinity, maxLon = -Infinity, minLat = Infinity, maxLat = -Infinity;
+for (const b of boroughData) {
+  for (const [lon, lat] of b.ring) {
+    minLon = Math.min(minLon, lon); maxLon = Math.max(maxLon, lon);
+    minLat = Math.min(minLat, lat); maxLat = Math.max(maxLat, lat);
+  }
+}
+const latScale = Math.cos(((minLat + maxLat) / 2) * Math.PI / 180);
+const spanX = (maxLon - minLon) * latScale;
+const spanZ = maxLat - minLat;
+const S = 9 / Math.max(spanX, spanZ);
+const cLon = (minLon + maxLon) / 2;
+const cLat = (minLat + maxLat) / 2;
+const project = ([lon, lat]) => [
+  (lon - cLon) * latScale * S,
+  -(lat - cLat) * S, // north = -z
+];
+
+// ---------- scene ----------
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0f1115);
+
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 8.5, 8.5);
+function frameCamera() {
+  const aspect = window.innerWidth / window.innerHeight;
+  camera.position.normalize().multiplyScalar(12 * Math.max(1, 1.3 / aspect));
+}
+frameCamera();
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 0, 0);
+controls.minDistance = 3;
+controls.maxDistance = 30;
+controls.maxPolarAngle = Math.PI * 0.55; // just below the horizon, undersides stay visible
+
+scene.add(new THREE.HemisphereLight(0xcfd8e6, 0x3a2e22, 0.9));
+const key = new THREE.DirectionalLight(0xfff2dd, 1.6);
+key.position.set(6, 10, 4);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0x8899bb, 0.4);
+fill.position.set(-6, -3, -5);
+scene.add(fill);
+
+// ---------- boroughs ----------
+
+const SLAB_H = 0.14;
+const boroughs = [];
+const pickMeshes = [];
+
+boroughData.forEach((b, idx) => {
+  // one arc-length resample serves both the slab shape and the dirt top ring,
+  // so the two meet vertex-for-vertex at the rim
+  const outline = resampleOutline(b.ring.map(project), Math.round(dirtConfig.facets));
+
+  const shape = new THREE.Shape();
+  outline.forEach(([x, z], i) => {
+    if (i === 0) shape.moveTo(x, -z); else shape.lineTo(x, -z);
+  });
+  shape.closePath();
+
+  const geo = new THREE.ExtrudeGeometry(shape, { depth: SLAB_H, bevelEnabled: false });
+  geo.rotateX(-Math.PI / 2); // shape y → world -z, extrude z → world y
+
+  const topColor = new THREE.Color(0x8aa86a).offsetHSL(
+    (idx % 7 - 3) * 0.004, 0, ((idx * 37) % 9 - 4) * 0.012
+  );
+  const topMat = new THREE.MeshStandardMaterial({ color: topColor, roughness: 0.9, flatShading: true });
+  const sideMat = new THREE.MeshStandardMaterial({ color: 0x5c4a33, roughness: 0.95, flatShading: true });
+  const mesh = new THREE.Mesh(geo, [topMat, sideMat]);
+
+  const edges = new THREE.LineSegments(
+    new THREE.EdgesGeometry(geo, 20),
+    new THREE.LineBasicMaterial({ color: 0x3d4a30, transparent: true, opacity: 0.55 })
+  );
+
+  const group = new THREE.Group();
+  group.add(mesh, edges);
+  scene.add(group);
+
+  let cx = 0, cz = 0, charR = 0;
+  for (const [x, z] of outline) { cx += x; cz += z; }
+  cx /= outline.length; cz /= outline.length;
+  for (const [x, z] of outline) charR += Math.hypot(x - cx, z - cz);
+  charR /= outline.length;
+
+  const borough = {
+    name: b.name,
+    group,
+    mesh,
+    topMat,
+    outline,
+    charR,
+    lifted: false,
+    y: 0,
+    targetY: 0,
+    liftY: 0.6 + charR * 0.8,
+    bobPhase: idx * 1.7,
+    dirt: null,
+  };
+  mesh.userData.borough = borough;
+  boroughs.push(borough);
+  pickMeshes.push(mesh);
+});
+
+// ---------- interaction ----------
+
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+const boroughLabel = document.getElementById('borough');
+let hovered = null;
+
+function pick(e) {
+  pointer.set(
+    (e.clientX / window.innerWidth) * 2 - 1,
+    -(e.clientY / window.innerHeight) * 2 + 1
+  );
+  raycaster.setFromCamera(pointer, camera);
+  const hit = raycaster.intersectObjects(pickMeshes, false)[0];
+  return hit ? hit.object.userData.borough : null;
+}
+
+renderer.domElement.addEventListener('pointermove', (e) => {
+  const b = pick(e);
+  if (b !== hovered) {
+    if (hovered) hovered.topMat.emissive.setHex(0x000000);
+    hovered = b;
+    if (hovered) hovered.topMat.emissive.setHex(0x2a2413);
+    boroughLabel.textContent = hovered
+      ? hovered.name + (hovered.lifted ? ' · lifted' : '')
+      : '';
+    renderer.domElement.style.cursor = hovered ? 'pointer' : '';
+  }
+});
+
+let downAt = null;
+renderer.domElement.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener('pointerup', (e) => {
+  const wasClick = downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 6;
+  downAt = null;
+  if (!wasClick) return;
+  const b = pick(e);
+  if (!b) return;
+  b.lifted = !b.lifted;
+  b.targetY = b.lifted ? b.liftY : 0;
+  if (b.lifted && !b.dirt) {
+    // deterministic per-borough variation on the one chosen config
+    const cfg = { ...dirtConfig, seed: (dirtConfig.seed + b.name.length * 7919 + b.outline.length) >>> 0 };
+    b.dirt = buildDirtForOutline(b.outline, cfg, { yTop: 0.015, resample: false });
+    b.dirt.visible = false;
+    b.group.add(b.dirt);
+  }
+  boroughLabel.textContent = b.name + (b.lifted ? ' · lifted' : '');
+});
+
+// ---------- loop ----------
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  frameCamera();
+});
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => {
+  const t = clock.getElapsedTime();
+  for (const b of boroughs) {
+    let goal = b.targetY;
+    if (b.lifted && !reducedMotion) goal += Math.sin(t * 0.9 + b.bobPhase) * 0.025;
+    b.y = reducedMotion ? goal : b.y + (goal - b.y) * 0.1;
+    b.group.position.y = b.y;
+    if (b.dirt) b.dirt.visible = b.y > 0.03;
+  }
+  controls.update();
+  renderer.render(scene, camera);
+});
+</script>
+</body>
+</html>
