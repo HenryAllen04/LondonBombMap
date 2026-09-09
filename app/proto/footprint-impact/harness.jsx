@@ -7,7 +7,6 @@ import Current from './current';
 import Footprints from './footprints';
 import Fragments from './fragments';
 import Layers from './layers';
-import '../borough-plates/system/tokens.css';
 import './picker.css';
 import './impact.css';
 
@@ -80,7 +79,7 @@ export default function Harness({initial,config,definition,site,index}) {
   function download(){const url=URL.createObjectURL(new Blob([JSON.stringify(exportStudy(study),null,2)],{type:'application/geo+json'})),a=document.createElement('a');a.href=url;a.download='russell-house-footprint-impact.geojson';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
   const metrics=study?.metrics,share=metrics?.history?metrics.outside/metrics.history:0;
 
-  return <><main className="borough-study impact-study">
+  return <><main className="lb-app impact-study">
     <header className="impact-header"><a href="/proto/london-island/compare/overlay"><ArrowLeft size={16}/><span>London Before</span></a><span className="impact-eyebrow">PIMLICO / FOOTPRINT STUDY</span><button onClick={()=>dialog.current.showModal()}>Evidence & method <ArrowUpRight size={16}/></button></header>
     <div className="impact-heading"><div><span className="impact-eyebrow">1940–1945 × TODAY</span><h1>Where the footprints diverge.</h1></div><p>The damage belongs to a place. <br/>Today’s building may have a different shape.</p></div>
     <div className="impact-workspace">

@@ -1,44 +1,45 @@
-# London Before — provisional design system
+# London Before — design system
 
-The integrated Pimlico island is the selected homepage direction.
-Use a quiet paper workspace, a clearly bounded 3D map, and the original archive image within reach.
-Colour represents historical evidence or an explicitly labelled draft candidate, never decoration.
+A quiet paper workspace holding a clearly bounded 3D map, with the original archive image within reach.
+Colour means historical evidence or an explicitly labelled draft candidate, never decoration.
+Everything an agent needs is in `components/system/` and the four files in `docs/design/`.
 
-## Scope and authority
+## Where the system lives
 
-- The implemented system lives in `app/proto/borough-plates/system/` and `app/proto/borough-plates/plates.css`.
-- New exploration screens use this system. Do not infer design rules from `app/globals.css`, `components/`, or earlier prototypes: they are legacy baselines.
-- The integrated island is promoted to `/`, implemented in `components/pimlico-island/`. The old Explorer and Paper/Pieces/Night island variants have been removed. Alignment and impact prototypes remain independent tools.
-- The current variants share one system: Atlas, Borough, Desk. The original Reference remains unchanged for comparison.
+| What | File |
+| --- | --- |
+| Tokens (`--lb-*`) | `components/system/tokens.css`, loaded on every route from `app/globals.css` |
+| Component styles (`.lb-*`) | `components/system/system.css`, loaded on every route |
+| Components | `components/system/components.tsx` |
+| Production call site | `components/pimlico-island/surface.jsx` (the homepage) |
+| Prototype call site | `app/proto/borough-plates/workspace.jsx` |
 
-## Rules before editing
+Screens never import the two stylesheets. Wrap the page root in `lb-app` to get the paper background, ink text, DM Sans, focus rings and button resets.
 
-1. Read [tokens](docs/design/tokens.md) for colours, type, spacing and surfaces.
-2. Read [components](docs/design/components.md) before adding a control, map container or source card.
-3. Use semantic `--lb-*` tokens for product UI. Do not introduce raw UI colours. MapLibre paint, archival category colours and the fixed prototype controls/picker are explicit exceptions.
-4. A map belongs inside `MapPlate`. Page margins remain visible at desktop widths; do not return to a full-viewport canvas.
-5. Modern height is not historical height. Damage overlap is not historical identity. Keep evidence state visible on the plate and the building inspector.
-6. Borough names and outlines come from the imported GLA data. Do not fabricate administrative boundaries. City of London is separate from the 32 boroughs.
-7. Use native controls and 44px interactive targets. All filters need a text label; colour alone is insufficient.
-8. Data metrics use tabular numbers. No overlap metric may be labelled “confidence” or “probability”.
-9. Keep choices in JSX composition. Do not grow a component with layout flags such as `withLegend`, `withSource`, or `withSidebar`.
-10. Prototype variant selection has no scene animation. Respect reduced-motion preferences for any future camera animation.
+## Read before editing
 
-## Decisions received
+1. [Tokens and layout](docs/design/tokens.md): which token for which role, type sizes, spacing, breakpoints.
+2. [Controls](docs/design/controls.md): Button, ToggleGroup, Toolbar, RangeField, Notice, native controls.
+3. [Evidence and maps](docs/design/evidence.md): MapPlate, EvidenceBadge, ReferenceCard, DamageKey, wording rules.
+4. [Decisions](docs/design/decisions.md): what the user has accepted and rejected. Do not reopen a rejected direction.
 
-- Preferred: Reference, 3D coloured buildings, stronger tilt, original paper map nearby.
-- Preferred next direction: a map on a plate, London navigated by borough.
-- Rejected: fullscreen maps as the only layout; treating broad draft areas as house-level evidence.
-- Unresolved: Atlas vs Borough vs Desk; degree of tilt; historical-to-modern matching after a sharper source arrives.
+## Rules
 
-For the algorithm and its limits, read [building matching](docs/building-matching.md).
+1. Product UI uses `--lb-*` tokens only. No raw colours, no legacy `--ink` or `--font`, no new variables. The only exceptions are MapLibre paint literals in `map.jsx`, damage category colours from `lib/damage.ts`, and the fixed prototype picker and tuning panels.
+2. Variants are closed TypeScript unions. A variant not in the union does not exist. Add it to the union, `system.css` and the docs together, or not at all.
+3. Structure is JSX composition. Never add a layout flag such as `withLegend`, `withSidebar` or `fullScreen`; put the part in `children`.
+4. Every component forwards its ref and spreads remaining props. Keep both when editing.
+5. Interactive targets are 44px minimum. Every filter and toggle has a text label; colour alone never carries meaning.
+6. Data metrics use tabular numbers. No overlap metric is labelled "confidence", "probability" or "verified".
+7. Modern height is not historical height. Damage overlap is not historical identity. An EvidenceBadge stays visible on every map and building inspector.
+8. Borough names and outlines come from the imported GLA data. City of London is separate from the 32 boroughs. Never draw a boundary that is not in the data.
+9. A MapLibre map lives inside MapPlate, and page margins stay visible at desktop widths; a full-viewport canvas was rejected. The homepage island stage is the one map outside MapPlate because the island draws its own underside.
+10. No scene animation on variant selection. Any future camera animation honours `prefers-reduced-motion`.
 
-## Earlier island exploration — September 2026 (retired)
+## Adding a component
 
-The user rejected the rectangular map-container interpretation of “plate”. The accepted direction is a bounded London landmass that rotates as a 3D object. `/proto/london-island` explores Paper, Pieces and Night outside the provisional component base; the previous Atlas remains a baseline. These are competing design directions, not new production component contracts. See `app/proto/london-island/README.md` for controls, data limits and the decision record.
+Extract a component only once the same markup exists in three screens. Put it in `components/system/components.tsx`, its styles under an `.lb-` class in `system.css`, and document it in the matching docs file with one correct and one incorrect example taken from a real call site.
 
-Paper island refinement: the user selected thickness 0.1, separation 0, lift 0.75, tilt 67°, bearing 11°, building height 1 and light 3.3, with buildings, damage colours and labels enabled. These were the defaults of the retired Paper prototype. Paper now defaults to drag-to-pan with an explicit orbit alternative. Map/background colours remain tunable; a cooler stone backdrop is the provisional starting point. Partial roof colour patches must always be described as draft area intersections, never verified historical house classifications.
+## Checking the docs
 
-## Homepage selection — September 2026
-
-The user selected the integrated Pimlico island as the home version and requested removal of the old version. The homepage uses the wartime sheet, modern 3D buildings, recessed Thames and the merged speckled dirt underside. Keep the source alignment, colour preview and map editor available. Old island entry URLs redirect to `/`. The former variant selector and Earlier studies link are removed.
+Ask an agent for a screen in one sentence and compare the result with these files. A hardcoded colour means the token rule is not findable; an invented variant means a set is not closed; a wrong component means a "use X, not Y" line is missing. Fix the doc, not only the screen.

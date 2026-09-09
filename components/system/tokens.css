@@ -1,4 +1,5 @@
-.borough-study {
+/* London Before design tokens. Loaded once from app/globals.css; available on every route. */
+:root {
   --lb-bg: oklch(.948 .012 85);
   --lb-paper: oklch(.988 .007 86);
   --lb-map-bed: oklch(.916 .018 86);

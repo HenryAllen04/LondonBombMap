@@ -13,7 +13,7 @@ The view is an isolated prototype. Nothing in the existing map, overlay editor, 
 
 ## Materials and geometry
 
-Uses the existing DM Sans font, borough-study tokens, plain CSS, Three.js and polygon-clipping. The Current variant imports the existing ObjectPreview without modifying it. The new scene is retained across picker changes, including visits to the 2D and Current variants. Fragments and Layers remember their own camera positions; numerical view controls update the renderer directly.
+Uses the existing DM Sans font, the shared `--lb-*` tokens, plain CSS, Three.js and polygon-clipping. The Current variant imports the existing ObjectPreview without modifying it. The new scene is retained across picker changes, including visits to the 2D and Current variants. Fragments and Layers remember their own camera positions; numerical view controls update the renderer directly.
 
 The server reads the saved `data/pimlico-overlay.json`, filters the current modern index to the selection and passes the existing Russell House trial boundary. If the saved alignment has no colour mask, the browser generates the same automatic draft mask as the colour editor from the original source image. It does not save the result or add the trial site link to the editor. Existing saved colour settings are reused when present. An incompatible source or a selection no longer containing the site produces a recoverable error.
 

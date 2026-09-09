@@ -54,6 +54,12 @@ and river recess are display dimensions.
 See [island details](app/proto/london-island/README.md) for controls, sources and
 validation, and [archive orders](docs/archive-orders.md) for the source research.
 
+## Design system
+
+Tokens and shared components live in `components/system/` and load on every route.
+Read [DESIGN.md](DESIGN.md) before adding UI; it links to the token, control, evidence and
+decision docs in `docs/design/`.
+
 ## Working tools
 
 - [Alignment and colour editor](http://localhost:3020/proto/london-island/compare/overlay)

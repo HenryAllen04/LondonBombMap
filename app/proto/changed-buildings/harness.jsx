@@ -5,7 +5,6 @@ import Today from './today';
 import Ghosts from './ghosts';
 import Compare from './compare';
 import sample from './sample.json';
-import '../borough-plates/system/tokens.css';
 import '../bomb-sites/picker.css';
 import './study.css';
 
@@ -45,7 +44,7 @@ export default function Harness({initial}){
  function tune(key,value){update({[key]:value});outputs.current[key].textContent=key==='height'?`${value} m`:`${Math.round(value*100)}%`;}
  async function copy(){try{await navigator.clipboard.writeText(JSON.stringify(config.current,null,2));setCopied('Copied');}catch{setCopied('Copy unavailable');}clearTimeout(copyTimer.current);copyTimer.current=setTimeout(()=>setCopied(''),2000);}
  const Variant=variants[current];
- return <><main className="borough-study change-study">
+ return <><main className="lb-app change-study">
   <header className="change-header"><a href="/"><ArrowLeft size={16}/> London Before</a><span>PIMLICO / A STUDY OF CHANGE</span><button onClick={()=>dialog.current.showModal()}>View the evidence ↗</button></header>
   <div className="change-workspace">
    <aside className="change-sidebar"><div><span className="change-eyebrow">CAMBRIDGE STREET / ALDERNEY STREET</span><h1>The same site.<br/>A different shape.</h1><p className="change-lead">A small experiment in seeing what used to stand beneath the map.</p></div>

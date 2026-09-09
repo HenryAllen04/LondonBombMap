@@ -7,7 +7,6 @@ import Desk from "./desk";
 import "../bomb-sites/picker.css";
 import "../bomb-sites/prototype.css";
 import "../paper-buildings/paper.css";
-import "./system/tokens.css";
 import "./plates.css";
 
 const variants = [Baseline, Atlas, Borough, Desk];

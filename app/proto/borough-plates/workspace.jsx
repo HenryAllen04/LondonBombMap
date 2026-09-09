@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import { ArrowUpRight, Compass, Layers3, Minus, Plus, RotateCcw, X } from 'lucide-react';
 import boroughData from './boroughs.json';
 import BoroughMap from './map';
-import { Button, DamageKey, EvidenceBadge, MapPlate, ReferenceCard } from './system/components';
+import { Button, DamageKey, EvidenceBadge, MapPlate, ReferenceCard, Toolbar } from '@/components/system/components';
 import { damageCategories } from '@/lib/damage';
 
 const boroughs=[...boroughData.features].sort((a,b)=>a.properties.name.localeCompare(b.properties.name));
@@ -37,13 +37,13 @@ export default function Workspace({layout}) {
   const map=<MapPlate surface={layout==='desk'?'inset':'raised'} aria-label="Borough map plate">
     <MapPlate.Header><div><span className="lb-section-label">{pilot?'WESTMINSTER / PIMLICO PILOT':borough.properties.name.toUpperCase()}</span><strong>{pilot?'A neighbourhood, house by house.':borough.properties.name}</strong></div><EvidenceBadge status={pilot?'draft':'unknown'}/></MapPlate.Header>
     <MapPlate.Canvas><BoroughMap borough={borough} controller={controller} colours={colours} category={category} minimumCoverage={minimum} onSelect={setSelected} onStats={setStats} onCamera={setCamera}/>{controls}
-      <div className="lb-map-actions"><Button size="icon" aria-label="Zoom in" onClick={()=>controller.current?.map.jumpTo({zoom:camera.zoom+.5})}><Plus size={17}/></Button><Button size="icon" aria-label="Zoom out" onClick={()=>controller.current?.map.jumpTo({zoom:camera.zoom-.5})}><Minus size={17}/></Button><Button size="icon" aria-label="Borough overview" onClick={()=>controller.current?.focus(borough,true)}><Compass size={17}/></Button>{pilot&&<Button size="icon" aria-label="Return to Pimlico" onClick={()=>controller.current?.pilot()}><RotateCcw size={16}/></Button>}</div>
+      <Toolbar orientation="vertical" className="lb-map-toolbar" aria-label="Map controls"><Button size="icon" aria-label="Zoom in" onClick={()=>controller.current?.map.jumpTo({zoom:camera.zoom+.5})}><Plus size={17}/></Button><Button size="icon" aria-label="Zoom out" onClick={()=>controller.current?.map.jumpTo({zoom:camera.zoom-.5})}><Minus size={17}/></Button><Button size="icon" aria-label="Borough overview" onClick={()=>controller.current?.focus(borough,true)}><Compass size={17}/></Button>{pilot&&<Button size="icon" aria-label="Return to Pimlico" onClick={()=>controller.current?.pilot()}><RotateCcw size={16}/></Button>}</Toolbar>
       {layout!=='desk'&&<div className="lb-floating-source">{reference}</div>}
       {selected&&layout!=='desk'&&<div className="lb-floating-match"><Button size="icon" className="lb-close-match" aria-label="Close building evidence" onClick={()=>setSelected(null)}><X size={16}/></Button><MatchInspector selected={selected} stats={stats} onSelect={setSelected}/></div>}
     </MapPlate.Canvas>
     <MapPlate.Footer><span>{pilot?`${stats.candidates} candidate parts · ${stats.ambiguous} ambiguous · ${stats.partial} partial${stats.invalid?` · ${stats.invalid} invalid`:''}`:'No historical damage data mapped for this borough'}</span><button onClick={()=>method.current.showModal()}>How are buildings matched? <ArrowUpRight size={13}/></button></MapPlate.Footer>
   </MapPlate>;
-  return <main className={`borough-study lb-layout-${layout}`}>
+  return <main className={`lb-app lb-layout-${layout}`}>
     <header className="lb-site-header"><a href="/" className="lb-wordmark"><Layers3 size={21}/> London<span>Before</span></a><span className="lb-section-label">AN ATLAS OF LONDON’S PAST</span><Button variant="outline" onClick={()=>method.current.showModal()}>About the matching</Button></header>
     <div className="lb-page">
       <div className="lb-page-intro"><div><span className="lb-section-label">{layout==='atlas'?'02 / THE ATLAS PLATE':layout==='borough'?'03 / BOROUGH BY BOROUGH':'04 / THE REFERENCE DESK'}</span><h1>{layout==='atlas'?'Every street has a before.':layout==='borough'?'London, one borough at a time.':'Keep the evidence beside the city.'}</h1><p>A contained 3D map, the original paper record, and a clear distinction between a location and a building’s history.</p></div>{layout!=='borough'&&<label className="lb-field lb-borough-field">Borough / City<select value={borough.properties.gss_code} onChange={e=>choose(e.target.value)}>{boroughs.map(b=><option key={b.properties.gss_code} value={b.properties.gss_code}>{b.properties.name}{b.properties.name==='Westminster'?' · Pimlico pilot':''}</option>)}</select></label>}</div>

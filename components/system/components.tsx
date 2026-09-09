@@ -1,5 +1,5 @@
 "use client";
-import { forwardRef, useState, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from 'react';
+import { createContext, forwardRef, useContext, useId, useState, type ButtonHTMLAttributes, type HTMLAttributes, type InputHTMLAttributes, type ReactNode } from 'react';
 import { ArrowUpRight, BookOpen } from 'lucide-react';
 import { damageCategories, type DamageCategory } from '@/lib/damage';
 import { ARCHIVE_URL } from '@/lib/places';
@@ -8,6 +8,45 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {variant?:'quiet'|'
 export const Button = forwardRef<HTMLButtonElement,ButtonProps>(function Button({variant='quiet',size='md',type='button',className='',...props},ref) {
   return <button ref={ref} type={type} className={`lb-button lb-button-${variant} lb-button-${size} ${className}`} {...props}/>;
 });
+
+type ToggleContextValue = {value:string|null;select:(value:string)=>void};
+const ToggleContext = createContext<ToggleContextValue|null>(null);
+type ToggleGroupProps = Omit<HTMLAttributes<HTMLDivElement>,'onChange'|'defaultValue'> & {value?:string|null;defaultValue?:string|null;onChange?:(value:string)=>void;appearance?:'segmented'|'list'};
+const ToggleGroupRoot = forwardRef<HTMLDivElement,ToggleGroupProps>(function ToggleGroup({value,defaultValue=null,onChange,appearance='segmented',className='',...props},ref) {
+  const [internal,setInternal] = useState<string|null>(defaultValue);
+  const selected=value===undefined?internal:value;
+  function select(next:string) {if(next===selected)return;if(value===undefined)setInternal(next);onChange?.(next);}
+  return <ToggleContext.Provider value={{value:selected,select}}><div ref={ref} role="group" className={`lb-toggle-group lb-toggle-group-${appearance} ${className}`} {...props}/></ToggleContext.Provider>;
+});
+type ToggleItemProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>,'value'> & {value:string};
+const ToggleItem = forwardRef<HTMLButtonElement,ToggleItemProps>(function Item({value,onClick,className='',...props},ref) {
+  const group=useContext(ToggleContext);
+  if(!group)throw new Error('ToggleGroup.Item must be rendered inside ToggleGroup.');
+  return <button ref={ref} type="button" aria-pressed={group.value===value} className={`lb-toggle ${className}`} onClick={e=>{onClick?.(e);if(!e.defaultPrevented)group.select(value);}} {...props}/>;
+});
+export const ToggleGroup = Object.assign(ToggleGroupRoot,{Item:ToggleItem});
+
+type ToolbarProps = HTMLAttributes<HTMLDivElement> & {orientation?:'horizontal'|'vertical'};
+export const Toolbar = forwardRef<HTMLDivElement,ToolbarProps>(function Toolbar({orientation='horizontal',className='',...props},ref) {
+  return <div ref={ref} role="group" className={`lb-toolbar lb-toolbar-${orientation} ${className}`} {...props}/>;
+});
+
+type RangeFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>,'type'|'value'|'defaultValue'|'onChange'> & {label:ReactNode;value?:number;defaultValue?:number;onChange?:(value:number)=>void;format?:(value:number)=>string};
+export const RangeField = forwardRef<HTMLInputElement,RangeFieldProps>(function RangeField({label,value,defaultValue,onChange,format=String,className='',id,...props},ref) {
+  const generated=useId(), inputId=id??generated;
+  const [internal,setInternal] = useState(defaultValue??Number(props.min??0));
+  const current=value===undefined?internal:value;
+  return <div className={`lb-range ${className}`}>
+    <label htmlFor={inputId}>{label}</label><output htmlFor={inputId}>{format(current)}</output>
+    <input ref={ref} id={inputId} type="range" value={current} onChange={e=>{const next=Number(e.target.value);if(value===undefined)setInternal(next);onChange?.(next);}} {...props}/>
+  </div>;
+});
+
+type NoticeProps = HTMLAttributes<HTMLDivElement> & {tone?:'status'|'alert'};
+export const Notice = forwardRef<HTMLDivElement,NoticeProps>(function Notice({tone='status',className='',...props},ref) {
+  return <div ref={ref} role={tone} className={`lb-notice lb-notice-${tone} ${className}`} {...props}/>;
+});
+
 const PlateRoot = forwardRef<HTMLElement,HTMLAttributes<HTMLElement>&{surface?:'raised'|'inset'}>(function Plate({surface='raised',className='',...props},ref) {
   return <section ref={ref} className={`lb-plate lb-plate-${surface} ${className}`} {...props}/>;
 });
