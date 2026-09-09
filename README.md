@@ -1,4 +1,4 @@
-# London Before
+# London Bomb Map
 
 An interactive Pimlico island: modern 3D buildings, streets and the Thames above a
 speckled dirt underside, with the original wartime sheet aligned to the surface.
